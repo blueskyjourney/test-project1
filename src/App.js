@@ -18,7 +18,7 @@ class App extends Component {
     super(props);
     this.state = {
       mode: 'welcome',
-      subject: { title: 'WEB', sub: 'world wide web!!!!' },
+      subject: { title: 'Freshman WEB', sub: 'Freshman world wide web!!!!' },
       welcome: { title: 'Welcome', desc1: 'Hello, React!!', desc2: 'React is a JavaScript library for building user interfaces.' },
       contents: [
         { id: 1, title: 'HTML', desc1: 'HTML is the standard markup language for Web pages.', desc2: 'HTML stands for Hyper Text Markup Language' },
