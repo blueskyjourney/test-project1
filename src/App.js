@@ -1,41 +1,68 @@
-/* eslint-disable */  //worning: react-hooks/exhaustive-deps
+/* eslint-disable */ //worning: react-hooks/exhaustive-deps
 
-import React, { Component } from 'react';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
 
-import Subject from './Subject';
-import TOC from './TOC';
-import Content from './Content';
+import Subject from "./Subject";
+import TOC from "./TOC";
+import Content from "./Content";
 
-import { useState } from 'react';
-
-
-
-
+import { useState } from "react";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mode: 'welcome',
-      subject: { title: 'WEB', sub: 'world wide web!!!!' },
-      welcome: { title: 'Welcome', desc1: 'Hello, React!!', desc2: 'React is a JavaScript library for building user interfaces.' },
+      mode: "welcome",
+      subject: { title: "WEB", sub: "world wide web!!!!" },
+      welcome: {
+        title: "Welcome",
+        desc1: "Hello, React!!",
+        desc2: "React is a JavaScript library for building user interfaces.",
+      },
       contents: [
-        { id: 1, title: 'HTML', desc1: 'HTML is the standard markup language for Web pages.', desc2: 'HTML stands for Hyper Text Markup Language' },
-        { id: 2, title: 'CSS', desc1: 'CSS is a style sheet language used for describing the presentation of a document written in HTML or XML.', desc2: 'CSS stands for Cascading Style Sheets' },
-        { id: 3, title: 'JavaScript', desc1: 'JavaScript is a programming language that conforms to the ECMAScript specification.', desc2: 'JavaScript is high-level, often just-in-time compiled, and multi-paradigm.' }
-      ]
+        {
+          id: 1,
+          title: "HTML",
+          desc1: "HTML is the standard markup language for Web pages.",
+          desc2: "HTML stands for Hyper Text Markup Language",
+        },
+        {
+          id: 2,
+          title: "CSS",
+          desc1:
+            "CSS is a style sheet language used for describing the presentation of a document written in HTML or XML.",
+          desc2: "CSS stands for Cascading Style Sheets",
+        },
+        {
+          id: 3,
+          title: "JavaScript",
+          desc1:
+            "JavaScript is a programming language that conforms to the ECMAScript specification.",
+          desc2:
+            "JavaScript is high-level, often just-in-time compiled, and multi-paradigm.",
+        },
+        {
+          id: 4,
+          title: "MasterScript",
+          desc1:
+            "MasterScript is a programming language that conforms to the ECMAScript specification.",
+          desc2:
+            "MasterScript is high-level, often just-in-time compiled, and multi-paradigm.",
+        },        
+      ],
     };
   }
   render() {
-    console.log('App render');
-    let _title, _desc1, _desc2 = null;
-    if(this.state.mode === 'welcome') {
+    console.log("App render");
+    let _title,
+      _desc1,
+      _desc2 = null;
+    if (this.state.mode === "welcome") {
       _title = this.state.welcome.title;
       _desc1 = this.state.welcome.desc1;
       _desc2 = this.state.welcome.desc2;
-    }
-    else if(this.state.mode === 'read') {
+    } else if (this.state.mode === "read") {
       _title = this.state.contents[2].title;
       _desc1 = this.state.contents[2].desc1;
       _desc2 = this.state.contents[2].desc2;
@@ -43,14 +70,13 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Subject 
-          title={this.state.subject.title} 
-          sub={this.state.subject.sub} />
-        <Subject/>
+        <Subject
+          title={this.state.subject.title}
+          sub={this.state.subject.sub}
+        />
+        <Subject />
         <TOC data={this.state.contents}></TOC>
-        <Content title={_title}
-          desc1={_desc1}
-          desc2={_desc2} />
+        <Content title={_title} desc1={_desc1} desc2={_desc2} />
       </div>
     );
   }
