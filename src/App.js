@@ -13,13 +13,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mode: "welcome",
-      subject: { title: "WEB", sub: "world wide web!!!!" },
-      welcome: {
-        title: "Welcome",
-        desc1: "Hello, React!!",
-        desc2: "React is a JavaScript library for building user interfaces.",
-      },
+      mode: 'welcome',
+      subject: { title: 'Freshman WEB', sub: 'Freshman world wide web!!!!' },
+      welcome: { title: 'Welcome', desc1: 'Hello, React!!', desc2: 'React is a JavaScript library for building user interfaces.' },
       contents: [
         {
           id: 1,
