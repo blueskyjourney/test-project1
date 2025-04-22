@@ -13,7 +13,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mode: 'welcome',
+      mode: 'read',
+      selectContentId: null, // 선택된 컨텐츠 ID
       subject: { title: 'Freshman WEB', sub: 'Freshman world wide web!!!!' },
       welcome: { title: 'Welcome', desc1: 'Hello, React!!', desc2: 'React is a JavaScript library for building user interfaces.' },
       contents: [
@@ -45,23 +46,47 @@ class App extends Component {
             "MasterScript is a programming language that conforms to the ECMAScript specification.",
           desc2:
             "MasterScript is high-level, often just-in-time compiled, and multi-paradigm.",
+        },  
+        {
+          id: 5,
+          title: "JasonScript",
+          desc1:
+            "JasonScript is test only.",
+          desc2:
+            "JasonScript is the best in the world",
         },        
       ],
     };
   }
+
+  handleTocClick = (id) => {
+    console.log('TOC item clicked:', id);
+    // id를 기반으로 mode를 "read"로 변경하고, 선택된 컨텐츠 ID를 설정합니다.
+    this.setState({
+      mode: "read",
+      selectContentId: id,
+    },
+    () => {
+      console.log('State updated:', this.state.mode, this.state.selectContentId);
+    });
+    
+  };
+
   render() {
-    console.log("App render");
-    let _title,
-      _desc1,
-      _desc2 = null;
+    // console.log("App render");
+    let _title, _desc1, _desc2 = null;
+
     if (this.state.mode === "welcome") {
       _title = this.state.welcome.title;
       _desc1 = this.state.welcome.desc1;
       _desc2 = this.state.welcome.desc2;
     } else if (this.state.mode === "read") {
-      _title = this.state.contents[2].title;
-      _desc1 = this.state.contents[2].desc1;
-      _desc2 = this.state.contents[2].desc2;
+      const selectedContent = this.state.contents.find(
+        (content) => content.id === this.state.selectContentId
+      );
+      _title = selectedContent ? selectedContent.title : '';
+      _desc1 = selectedContent ? selectedContent.desc1 : '';
+      _desc2 = selectedContent ? selectedContent.desc2 : '';
     }
 
     return (
@@ -71,66 +96,11 @@ class App extends Component {
           sub={this.state.subject.sub}
         />
         <Subject />
-        <TOC data={this.state.contents}></TOC>
+        <TOC data={this.state.contents} onTocClick={this.handleTocClick}></TOC>
         <Content title={_title} desc1={_desc1} desc2={_desc2} />
       </div>
     );
   }
 }
-
-/* 
-// old blog test page
-function App() {
-  let post = 'irvine favorite noodle shop';
-
-  let [items, setItems] = useState([
-    { id: 1, title: '남자코트 추천', date: '2월 17일 발행' },
-    { id: 2, title: '강남 우동맞집', date: '2월 18일 발행' },
-    { id: 3, title: '안녕하세요', date: '4월 18일 발행' },
-  ]);
-
-  let [like, setLike] = useState(0); 
-
-  
-
-  function changeItem() {
-    let copyItems = [...items];
-    copyItems[0].title = '여자코트 추천';
-    setItems(copyItems);
-  }
-
-  function sortItems() {
-    let copyItems = [...items];
-    // sort() 메서드는 배열을 정렬하고, 그 배열을 반환합니다.
-    // sort() 메서드는 기본적으로 문자열을 유니코드 코드 포인트 순서로 정렬합니다.
-        copyItems.sort((a, b) => {
-      return a.title.localeCompare(b.title);
-    });
-
-    setItems(copyItems);
-  }
-
-
-  return (
-    <div className="App">
-      <div className="black-nav">
-        <h4 style={{color:'skyblue', fontSize: '18px'}}>{post}</h4>
-      </div>
-      <button onClick={changeItem}>첫번째 아이템 여자코트 추전으로 변경</button>
-      <button onClick={sortItems}>가나다순정렬</button>
-
-      {
-        items.map(item => (
-          <div className='list'>
-            <h4>{item.title} <span onClick={()=>{setLike(like+1);console.log(like);}}>👍</span> {like} </h4>
-            <p>{item.date}</p>
-          </div>
-        ))
-      }
-
-      <h4 id={post}>{post}</h4>
-    </div>
-  );
-} */
 
 export default App;
