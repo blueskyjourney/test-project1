@@ -1,104 +1,107 @@
 /* eslint-disable */ //worning: react-hooks/exhaustive-deps
 
 import React, { Component } from "react";
+import TOC2 from "./components/TOC2";
+import Subject2 from "./components/Subject2";
+import ReadContent from "./components/ReadContent";
+import Control from "./components/Control";
+import CreateContent from "./components/CreateContent";
 import "./App.css";
-
-import Subject from "./Subject";
-import TOC from "./TOC";
-import Content from "./Content";
-
-import { useState } from "react";
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      mode: 'read',
-      selectContentId: null, // 선택된 컨텐츠 ID
-      subject: { title: 'Freshman WEB', sub: 'Freshman world wide web!!!!' },
-      welcome: { title: 'Welcome', desc1: 'Hello, React!!', desc2: 'React is a JavaScript library for building user interfaces.' },
+      mode: "create",
+      selected_content_id: 4,
+      subject: { title: "WEB", sub: "world wide web!!!" },
+      welcome: { title: "Welcome", desc: "Hello, React!!" },
       contents: [
-        {
-          id: 1,
-          title: "HTML",
-          desc1: "HTML is the standard markup language for Web pages.",
-          desc2: "HTML stands for Hyper Text Markup Language",
-        },
-        {
-          id: 2,
-          title: "CSS",
-          desc1:
-            "CSS is a style sheet language used for describing the presentation of a document written in HTML or XML.",
-          desc2: "CSS stands for Cascading Style Sheets",
-        },
-        {
-          id: 3,
-          title: "JavaScript",
-          desc1:
-            "JavaScript is a programming language that conforms to the ECMAScript specification.",
-          desc2:
-            "JavaScript is high-level, often just-in-time compiled, and multi-paradigm.",
-        },
-        {
-          id: 4,
-          title: "MasterScript",
-          desc1:
-            "MasterScript is a programming language that conforms to the ECMAScript specification.",
-          desc2:
-            "MasterScript is high-level, often just-in-time compiled, and multi-paradigm.",
-        },  
-        {
-          id: 5,
-          title: "JasonScript",
-          desc1:
-            "JasonScript is test only.",
-          desc2:
-            "JasonScript is the best in the world",
-        },        
-      ],
+        { id: 1, title: "HTML", desc: "HTML is HyperText Markup Language" },
+        { id: 2, title: "CSS", desc: "CSS is for design" },
+        { id: 3, title: "JavaScript", desc: "JavaScript is for interactive" },
+        { id: 4, title: "React", desc: "React is for UI" },
+        { id: 5, title: "Node", desc: "Node is for server" },
+        { id: 6, title: "Express", desc: "Express is for web server" },
+        { id: 7, title: "MongoDB", desc: "MongoDB is for database" },
+        { id: 8, title: "MySQL", desc: "MySQL is for database" },
+        { id: 9, title: "PostgreSQL", desc: "PostgreSQL is for database" },
+      ]
     };
   }
-
-  handleTocClick = (id) => {
-    console.log('TOC item clicked:', id);
-    // id를 기반으로 mode를 "read"로 변경하고, 선택된 컨텐츠 ID를 설정합니다.
-    this.setState({
-      mode: "read",
-      selectContentId: id,
-    },
-    () => {
-      console.log('State updated:', this.state.mode, this.state.selectContentId);
-    });
-    
-  };
-
   render() {
     // console.log("App render");
-    let _title, _desc1, _desc2 = null;
-
+    let _title, _desc, _article = null;
     if (this.state.mode === "welcome") {
       _title = this.state.welcome.title;
-      _desc1 = this.state.welcome.desc1;
-      _desc2 = this.state.welcome.desc2;
-    } else if (this.state.mode === "read") {
-      const selectedContent = this.state.contents.find(
-        (content) => content.id === this.state.selectContentId
-      );
-      _title = selectedContent ? selectedContent.title : '';
-      _desc1 = selectedContent ? selectedContent.desc1 : '';
-      _desc2 = selectedContent ? selectedContent.desc2 : '';
+      _desc = this.state.welcome.desc;
+      _article = <ReadContent title={_title} desc={_desc}></ReadContent>;
+    }
+    else if (this.state.mode === "read") {
+      var i = 0;
+
+      while(i < this.state.contents.length) {
+        var data = this.state.contents[i];
+        if (data.id === this.state.selected_content_id) {
+          _title = data.title;
+          _desc = data.desc;
+          break;
+        }
+        i++;
+      } 
+      _article = <ReadContent title={_title} desc={_desc}></ReadContent>;
+    }
+    else if (this.state.mode === "create") {
+        _article = <CreateContent 
+        onSubmit={(_title, _desc) => { 
+          console.log(_title, _desc);  
+
+          // this.state.contents.push는 원본을 변경 - 비추
+          //var _contents = this.state.contents.push({id: this.state.contents.length + 1, title: _title, desc: _desc});
+
+          // this.state.contents.concat는 새로운 배열을 만들어서 원본을 변경하지 않음 - 추천
+          var _contents = this.state.contents.concat({id: this.state.contents.length + 1, title: _title, desc: _desc});
+
+        
+
+          this.setState({
+            contents: _contents
+          });
+        }
+      }></CreateContent>;
     }
 
-    return (
-      <div className="App">
-        <Subject
-          title={this.state.subject.title}
-          sub={this.state.subject.sub}
-        />
-        <Subject />
-        <TOC data={this.state.contents} onTocClick={this.handleTocClick}></TOC>
-        <Content title={_title} desc1={_desc1} desc2={_desc2} />
-      </div>
+    // console.log('render', this);
+
+    return(
+    <div className="App">
+      <Subject2 
+        title={this.state.subject.title} 
+        sub={this.state.subject.sub}
+        onChangePage={() => {
+          console.log("onChangePage render", this); // e.target is the anchor tag
+          console.log(this.state.mode);
+           this.setState({ mode: "welcome" });
+        }}
+      >
+      </Subject2>
+      <TOC2 data={this.state.contents} onChangePage={
+        (id) => {
+          this.setState({ 
+            mode: "read",
+            selected_content_id: Number(id) // convert string to number
+          });
+        }
+      }></TOC2>
+
+      <Control onChangeMode={(_mode)=>{
+        this.setState({
+          mode: _mode
+        });
+      }}></Control>
+
+      {_article}
+    </div>
     );
   }
 }
