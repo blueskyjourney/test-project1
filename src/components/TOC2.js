@@ -4,11 +4,11 @@ class TOC2 extends Component {
   shouldComponentUpdate(newProps, newState) {
     // console.log("TOC2 render", newProps.data, this.props.data);
     if (this.props.data === newProps.data) {
-      console.log("TOC2 render false", newProps.data, this.props.data);
+      //console.log("TOC2 render false", newProps.data, this.props.data);
       return false; // no update
     }
     else {
-      console.log("TOC2 render true", newProps.data, this.props.data);
+      //console.log("TOC2 render true", newProps.data, this.props.data);
       return true; // update
     }
   }
